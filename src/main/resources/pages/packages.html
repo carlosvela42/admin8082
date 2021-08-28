@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="includes/header :: header"> </head>
+    <body class="sb-nav-fixed">
+         <nav th:replace="includes/nav :: nav"> </nav>
+         <div id="layoutSidenav">
+            <div th:replace="includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        
+                    </div>
+                </main>
+                <div class="col-3"></div>  
+				<div class="container col-6">  
+				    <h1>Danh sách gói cước</h1>  
+				    <table class="table table-active">  
+				        <tr>  
+				            <th>Tên gói cước</th>  
+				            <th>Giá</th>
+				            <th>Thuộc danh mục</th>
+				            <th>Thời hạn</th>
+				            <!-- <th>Mã code</th> -->
+				            <!-- <th>Template mail</th>	 -->			             
+				            <th>Actions</th>  
+				        </tr>  
+				        <tr th:each="package : ${packages}">  
+				            <td th:text="${package.name}"></td>  
+				            <td th:text="${package.price}"></td>  
+				             <td th:text="${package.category}"></td>  
+				            <td th:text="${package.time}"></td>
+				            <!-- <td th:text="${package.code}"></td>   -->
+				            <!-- <td th:text="${package.template}"></td> -->
+				            <td>  
+				                <a th:href="@{/editPackage?id={id}(id=${package.id})}" class="btn btn-primary">Edit</a>  
+				                <a th:href="@{/deletetPackage?id={id}(id=${package.id})}" class="btn btn-danger">Delete</a>  
+				            </td>  
+				        </tr>  
+				        
+				    </table>  
+				    <a href="/addPackage" class="btn btn-success">Thêm gói cước</a>  
+				</div>  
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+    </body>
+    <footer th:replace="includes/footer :: footer"> </footer>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="includes/header :: header"> </head>
+    
+    <body class="sb-nav-fixed">
+         
+         <nav th:replace="includes/nav :: nav"> </nav>
+         <div id="layoutSidenav">
+            <div th:replace="includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        
+                    </div>
+                </main>
+                <div class="col-3"></div>  
+				<div class="container col-6">  
+				    <h1>Danh sách khách hàng</h1>
+				    <form class="form-signin" action="#" id="frmSearch" th:action="@{/searchUser}" th:object="${product}"
+					method="post">
+		              <div class="form-label-group">
+		              	<label for="inputEmail">Email</label>
+		                <input type="text" id="inputEmail" class="form-control" placeholder="Email" autofocus="autofocus" th:field="*{email}"></input>
+		                
+		              </div>
+		
+		              <div class="form-label-group">
+		                 <label for="inputPackage">Gói</label>
+		                 
+		                <select class="form-control" id="inputPackage" name="inputPackage" th:field="*{packageId}">
+					        <option value="">Chọn gói</option>
+					        <option th:each="packages : ${packages}"
+					                th:value="${packages.id}"
+					                th:text="${packages.category}+' : '+${packages.name}"></option>
+					    </select>
+		              </div>
+		              
+		               <div class="form-label-group">
+		             	<label for="inputIsCancel">Đã hủy</label>
+		                <select id="inputIsCancel" name="inputIsCancel" class="form-control" th:field="*{isCancel}">
+							<option value="" selected="selected">Tất cả</option>
+							<option value="Y">Đã hủy</option>
+							<option value="N">Chưa hủy</option>
+						</select>
+		                
+		              </div>
+	
+		              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button>
+		              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick="excel()">Excel</button>
+		            </form>  
+				    <table class="table table-active" id="headerTable">  
+				        <tr>  
+				            <th>Email</th>  
+				            <th>Gói</th>	
+				            <th>Đã hủy</th>
+				            <th>Số tiền đã chi tiêu</th>
+				            <th>Phone</th>	
+				            <th>Machine ID</th>	
+				            <th>Ngày bắt đầu tham gia</th>	
+				            <th>Ngày hủy</th>	
+				            <th>Mã giảm giá</th>	             
+				            <th>Edit</th>  
+				            <th> <input type="checkbox" onClick="toggle(this)" value=""></input></th> 
+				        </tr>  
+				        <tr th:each="user : ${users}">  
+				            <td th:text="${user.email}"></td>  
+				            <td th:text="${user.packageName}"></td>  
+				            <td th:text="${user.isCancel}"></td>
+				             <td th:text="${user.totalAmount}"></td>
+				             <td th:text="${user.phone}"></td>
+				             <td th:text="${user.machineId}"></td>
+				             <td th:text="${user.paydate}"></td>
+				             <td th:text="${user.endDate}"></td>
+				             <td th:text="${user.code}"></td>
+				            <td>  
+				                <a th:href="@{/editUser?id={id}(id=${user.id})}" class="btn btn-primary">Edit</a>
+				                
+				                 
+				            </td> 
+				            <td>  
+				                
+				                <input type="checkbox" class="chbox" th:id="${user.email}" th:name="${user.email}" value=""></input>
+				                 
+				            </td>   
+				        </tr>  
+				        
+				    </table> 
+				    <iframe id="txtArea1" style="display:none"></iframe> 
+				    <div class="form-label-group">
+		              
+		                <input type="text" id="subject" class="form-control" placeholder="Tiêu đề"></input>
+		                
+		              </div>
+		              <div class="form-label-group">
+		              <div id="page-content-wrapper">
+
+		<!-- Section: Create Page -->
+		<section class="section mt-5 container-fluid">
+			<!-- First row -->
+			<div class="row">
+				<!-- First col -->
+				<div class="col-lg-12">
+					
+					<!-- Second card -->
+					<div class="card mb-r">
+						<textarea name="content" id="content"></textarea>
+						
+					</div>
+					<!-- /.Second card -->
+				</div>
+				<!-- /.First col -->
+				
+			</div>
+			<!-- /.First row -->
+		</section>
+		<!-- /.Section: Create Page -->
+	</div>
+	<script src="ckeditor/ckeditor.js"></script>
+	<script src="ckfinder/ckfinder.js"></script>
+	<script>
+		CKEDITOR
+				.replace(
+						'content',
+						{
+							filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+							filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+							filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+							filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+							filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+							filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+						});
+		/*Avatar start*/
+		function BrowseServer(startupPath, functionData) {
+			// You can use the "CKFinder" class to render CKFinder in a page:
+			var finder = new CKFinder();
+			// The path for the installation of CKFinder (default = "/ckfinder/").
+			finder.basePath = '../';
+			//Startup path in a form: "Type:/path/to/directory/"
+			finder.startupPath = startupPath;
+			// Name of a function which is called when a file is selected in CKFinder.
+			finder.selectActionFunction = SetFileField;
+			// Additional data to be passed to the selectActionFunction in a second argument.
+			// We'll use this feature to pass the Id of a field that will be updated.
+			finder.selectActionData = functionData;
+			// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+			// finder.selectThumbnailActionFunction = ShowThumbnails;
+			// Launch CKFinder
+			finder.popup();
+		}
+		// This is a sample function which is called when a file is selected in CKFinder.
+		function SetFileField(fileUrl, data) {
+			document.getElementById(data["selectActionData"]).innerHTML = this
+					.getSelectedFile().name;
+			document.getElementById("imgpreview").src = fileUrl;
+		}
+		/*Avatar end*/
+	</script>	
+		                
+		              </div>
+				    
+						
+		              <button class="btn btn-lg btn-primary btn-block text-uppercase" onclick="sendMail()">Gửi mail</button> 
+				</div>  
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+    </body>
+    <footer th:replace="includes/footer :: footer"> </footer>
+</html>

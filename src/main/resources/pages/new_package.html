@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="includes/header :: header"> </head>
+    <body class="sb-nav-fixed">
+         <nav th:replace="includes/nav :: nav"> </nav>
+         <div id="layoutSidenav">
+            <div th:replace="includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        
+                    </div>
+                </main>
+                <div class="container">
+				    <div class="row">
+				      <div class="col-lg-10 col-xl-9 mx-auto">
+				        <div class="card card-signin flex-row my-5">
+				          <div class="card-img-left d-none d-md-flex">
+				             <!-- Background image for card set in CSS! -->
+				          </div>
+				          <div class="card-body">
+				            <h5 class="card-title text-center">Thêm gói cước</h5>
+				            <form class="form-signin" action="#" th:action="@{/savePackage}" th:object="${packages}"
+							method="post">
+				              <div class="form-label-group">
+				              
+				                <input type="text" id="inputName" class="form-control" placeholder="Tên gói cước" required="requỉred" autofocus="true" th:field="*{name}"></input>
+				               
+				              </div>
+				
+				              <div class="form-label-group">
+				                <input type="text" id="inputPrice" class="form-control" placeholder="Giá" required="requỉred" th:field="*{price}"></input>
+				               
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputCategory" class="form-control" placeholder="Thuộc danh mục" required="requỉred" th:field="*{category}"></input>
+				               
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <input type="text" id="inputTime" class="form-control" placeholder="Thời hạn" required="requỉred" th:field="*{time}"></input>
+				                
+				              </div>
+				              
+				              <div class="form-label-group">
+				                <label for="inputType">Loại</label>
+				                <select id="inputType" name="inputType" class="form-control" th:field="*{type}">
+									<option value="0" selected="selected">Định kỳ</option>
+									<option value="1">Dùng thử</option>
+									<option value="2">Vĩnh viễn</option>
+								</select>
+				              </div>
+				              <div class="form-label-group">
+				                <label for="inputSubject">Tiêu đề mail</label>
+				                <input type="text" id="inputSubject" class="form-control" placeholder="Tiêu đề mail" required="requỉred" th:field="*{subject}"></input>
+				                
+				              </div>
+				              <!-- <div class="form-label-group">
+				                <input type="text" id="inputCode" class="form-control" placeholder="Mã code" required="requỉred" th:field="*{code}"></input>
+				                
+				              </div> -->
+				              
+				             <div id="page-content-wrapper">
+
+		<!-- Section: Create Page -->
+		<section class="section mt-5 container-fluid">
+			<!-- First row -->
+			<div class="row">
+				<!-- First col -->
+				<div class="col-lg-12">
+					
+					<!-- Second card -->
+					<div class="card mb-r">
+						<textarea name="content" id="content" th:field="*{template}"></textarea>
+					</div>
+					<!-- /.Second card -->
+				</div>
+				<!-- /.First col -->
+				
+			</div>
+			<!-- /.First row -->
+		</section>
+		<!-- /.Section: Create Page -->
+	</div>
+	<script src="ckeditor/ckeditor.js"></script>
+	<script src="ckfinder/ckfinder.js"></script>
+	<script>
+		CKEDITOR
+				.replace(
+						'content',
+						{
+							filebrowserBrowseUrl : 'ckfinder/ckfinder.html',
+							filebrowserImageBrowseUrl : 'ckfinder/ckfinder.html?type=Images',
+							filebrowserFlashBrowseUrl : 'ckfinder/ckfinder.html?type=Flash',
+							filebrowserUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Files',
+							filebrowserImageUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Images',
+							filebrowserFlashUploadUrl : 'ckfinder/core/connector/java/connector.java?command=QuickUpload&amp;type=Flash'
+						});
+		/*Avatar start*/
+		function BrowseServer(startupPath, functionData) {
+			// You can use the "CKFinder" class to render CKFinder in a page:
+			var finder = new CKFinder();
+			// The path for the installation of CKFinder (default = "/ckfinder/").
+			finder.basePath = '../';
+			//Startup path in a form: "Type:/path/to/directory/"
+			finder.startupPath = startupPath;
+			// Name of a function which is called when a file is selected in CKFinder.
+			finder.selectActionFunction = SetFileField;
+			// Additional data to be passed to the selectActionFunction in a second argument.
+			// We'll use this feature to pass the Id of a field that will be updated.
+			finder.selectActionData = functionData;
+			// Name of a function which is called when a thumbnail is selected in CKFinder. Preview img
+			// finder.selectThumbnailActionFunction = ShowThumbnails;
+			// Launch CKFinder
+			finder.popup();
+		}
+		// This is a sample function which is called when a file is selected in CKFinder.
+		function SetFileField(fileUrl, data) {
+			document.getElementById(data["selectActionData"]).innerHTML = this
+					.getSelectedFile().name;
+			document.getElementById("imgpreview").src = fileUrl;
+		}
+		/*Avatar end*/
+	</script>								
+
+			
+				              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Thêm gói cước</button>
+				              
+				            </form>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+    </body>
+    <footer th:replace="includes/footer :: footer"> </footer>
+</html>
