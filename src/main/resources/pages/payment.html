@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head th:replace="includes/header :: header"> </head>
+    
+    <body class="sb-nav-fixed">
+         
+         <nav th:replace="includes/nav :: nav"> </nav>
+         <div id="layoutSidenav">
+            <div th:replace="includes/sideNav :: sideNav"> </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Dashboard</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                        
+                    </div>
+                </main>
+                <div class="col-3"></div>  
+				<div class="container col-6">
+					<h1>Danh sách khách hàng</h1>
+				    <form class="form-signin" action="#" id="frmSearch" th:action="@{/searchPayment}" th:object="${paymentSearch}"
+					method="post"> 
+						<div class="form-label-group">
+			              	<label for="inputEmail">Email</label>
+			                <input type="text" id="inputEmail" class="form-control" placeholder="Email" autofocus="autofocus" th:field="*{email}"></input>
+			                
+			              </div>
+			           <div class="form-label-group">
+			              	<label for="inputPackage">Gói</label>
+			                <select class="form-control" id="inputPackage" name="inputPackage" th:field="*{packageId}">
+						        <option value="">Chọn gói</option>
+						        <option th:each="packages : ${packages}"
+						                th:value="${packages.id}"
+						                th:text="${packages.category}+' : '+${packages.name}"></option>
+						    </select>
+			              </div>
+			           <div class="form-label-group">
+			              	<label for="inputEmail">Ngày bắt đầu</label>
+			                <input type="date" id="inputEpayDateStart" class="form-control" placeholder="Ngày bắt đầu" th:field="*{epayDateStart}"></input>
+			                
+			              </div>
+			           <div class="form-label-group">
+			              	<label for="inputEpayDateEnd">Ngày kết thúc</label>
+			                <input type="date" id="inputEpayDateEnd" class="form-control" placeholder="Ngày kết thúc" th:field="*{epayDateEnd}"></input>
+			                
+			              </div> 
+			              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button>        
+					</form> 
+					
+					<table class="table table-active" id="headerTable">  
+				        <tr>  
+				            <th>Email</th>  
+				            <th>Gói</th>	
+				            <th>Thời gian thanh toán</th>
+				            <th>Số tiền</th>
+		
+				        </tr>  
+				        <tr th:each="p : ${payment}">  
+				            <td th:text="${p.email}"></td>  
+				            <td th:text="${p.name}"></td>  
+				            <td th:text="${p.epayDate}"></td>
+				             <td th:text="${p.price}"></td>
+			
+				        
+				        </tr>  
+				        
+				    </table> 
+				</div>
+				
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2021</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        
+    </body>
+    <footer th:replace="includes/footer :: footer"> </footer>
+</html>
