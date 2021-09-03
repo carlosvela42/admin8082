@@ -42,7 +42,7 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.price, a.epay_date, c.name,d.email from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
+		String sql = "select a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,'success' status from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
 		if(payment.getEpayDateStart() != null) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}

@@ -68,7 +68,7 @@ public class ProductService {
 	
 	public List<Product> listAll(Product productSearch) {
 		List<Product> map = new ArrayList<Product>();
-		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD, USERS.PHONE PHONE, USERS.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
+		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
 		if(productSearch.getEmail() != null && !"".equals(productSearch.getEmail())) {
 			sql += " AND USERS.EMAIL = ?";
 		}
@@ -216,6 +216,7 @@ public class ProductService {
 			pstm = con.prepareStatement(sql);
 			pstm.setString(1, product.getPhone());
 			pstm.setString(2, product.getPassword());
+			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String currentPrincipalName = authentication.getName();
 			
@@ -231,7 +232,7 @@ public class ProductService {
 	}
 	
 	public void updateProduct(Product user) {
-		String sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ? WHERE ID = ?";
+		String sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
@@ -245,7 +246,7 @@ public class ProductService {
 				pstm.setString(2, user.getIsCancel());
 				pstm.setString(3, null);
 				pstm.setDate(4, new java.sql.Date(System.currentTimeMillis()));
-			} else if(!user.getPackageIdNew().equals(user.getPackageId())){
+			} else if(user.getPackageIdNew() != null && !"".equals(user.getPackageIdNew()) && !user.getPackageIdNew().equals(user.getPackageId())){
 				pstm.setString(1, user.getPackageIdNew());
 				pstm.setString(2, user.getIsCancel());
 				pstm.setDate(3, new java.sql.Date(System.currentTimeMillis()));
@@ -257,8 +258,8 @@ public class ProductService {
 				pstm.setString(3, user.getPaydate());
 				pstm.setString(4, null);
 			}
-			
-			pstm.setLong(5, user.getId());
+			pstm.setString(5, user.getMachineId());
+			pstm.setLong(6, user.getId());
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
 		} catch (Exception e) {
