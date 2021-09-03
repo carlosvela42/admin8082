@@ -13,6 +13,11 @@ public class Payment {
 	private String epayDateEnd;
 	private String packageId;
 	private Long id;
+	private String phone;
+	private String machineId;
+	private String status;
+	private String nextPayDate;
+	private String code;
 	
 	public Payment() {
 	}
@@ -80,6 +85,46 @@ public class Payment {
 
 	public void setPackageId(String packageId) {
 		this.packageId = packageId;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMachineId() {
+		return machineId;
+	}
+
+	public void setMachineId(String machineId) {
+		this.machineId = machineId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getNextPayDate() {
+		return nextPayDate;
+	}
+
+	public void setNextPayDate(String nextPayDate) {
+		this.nextPayDate = nextPayDate;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	

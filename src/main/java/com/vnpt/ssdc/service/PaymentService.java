@@ -42,17 +42,17 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,'success' status from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
-		if(payment.getEpayDateStart() != null) {
+		String sql = "select a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,'success' status, b.next_pay_date, b.code from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
+		if(payment.getEpayDateStart() != null && !"".equals(payment.getEpayDateStart())) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}
-		if(payment.getEpayDateEnd() != null) {
+		if(payment.getEpayDateEnd() != null && !"".equals(payment.getEpayDateEnd())) {
 			sql += " and a.epay_date <= '" + payment.getEpayDateEnd() + "'";
 		}
-		if(payment.getPackageId() != null) {
+		if(payment.getPackageId() != null && !"".equals(payment.getPackageId())) {
 			sql += " and c.id = " + payment.getPackageId() ;
 		}
-		if(payment.getEmail() != null) {
+		if(payment.getEmail() != null && !"".equals(payment.getEmail())) {
 			sql += " and d.email = '" + payment.getEmail() + "'";
 		}
 		Connection con = null;
@@ -69,10 +69,16 @@ public class PaymentService {
 				pm.setEpayDate(rs.getString("EPAY_DATE"));
 				pm.setName(rs.getString("NAME"));
 				pm.setEmail(rs.getString("EMAIL"));
+				pm.setPhone(rs.getString("PHONE"));
+				pm.setMachineId(rs.getString("MACHINE_ID"));
+				pm.setStatus(rs.getString("STATUS"));
+				pm.setNextPayDate(rs.getString("NEXT_PAY_DATE"));
+				pm.setCode(rs.getString("CODE"));
 				totalAmount += Long.parseLong(rs.getString("PRICE"));
 				map.add(pm);
 			}
 			Payment pm = new Payment();
+			pm.setEmail("Tổng tiền");
 			pm.setPrice(totalAmount + "");
 			map.add(pm);
 		} catch (Exception e) {

@@ -32,6 +32,7 @@ and open the template in the editor.
 			                <input type="text" id="inputEmail" class="form-control" placeholder="Email" autofocus="autofocus" th:field="*{email}"></input>
 			                
 			              </div>
+			              
 			           <div class="form-label-group">
 			              	<label for="inputPackage">Gói</label>
 			                <select class="form-control" id="inputPackage" name="inputPackage" th:field="*{packageId}">
@@ -58,17 +59,26 @@ and open the template in the editor.
 				        <tr>  
 				            <th>Email</th>  
 				            <th>Gói</th>	
-				            <th>Thời gian thanh toán</th>
+				            
 				            <th>Số tiền</th>
-		
+				            <th>Số điện thoại</th>
+				            <th>Machine id</th>
+				            <th>Trạng thái</th>
+				            <th>Ngày thanh toán</th>
+				            <th>Ngày thanh toán tiếp</th>
+				            <th>Code</th>
+
 				        </tr>  
 				        <tr th:each="p : ${payment}">  
 				            <td th:text="${p.email}"></td>  
-				            <td th:text="${p.name}"></td>  
-				            <td th:text="${p.epayDate}"></td>
+				            <td th:text="${p.name}"></td>  				            
 				             <td th:text="${p.price}"></td>
-			
-				        
+				             	<td th:text="${p.phone}"></td>
+				             	<td th:text="${p.machineId}"></td>
+				             	<td th:text="${p.status}"></td>		
+				        	<td th:text="${p.epayDate}"></td>
+				        	<td th:text="${p.nextPayDate}"></td>
+				        	<td th:text="${p.code}"></td>
 				        </tr>  
 				        
 				    </table> 
