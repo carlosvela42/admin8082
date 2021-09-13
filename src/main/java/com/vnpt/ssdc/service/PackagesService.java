@@ -59,53 +59,6 @@ public class PackagesService {
 		return map;
 	}
 	
-	public Product selectByEmail(String email) {
-		String sql = "select * from PRODUCT WHERE EMAIL = ? LIMIT 1";
-		Connection con = null;
-		PreparedStatement pstm = null;
-		ResultSet rs = null;
-		Product product = new Product();
-		try {
-			con = JdbcTemplate.getDataSource().getConnection();
-			pstm = con.prepareStatement(sql);
-			pstm.setString(1, email);
-			rs = pstm.executeQuery();
-			while (rs.next()) {				
-				product.setCode(rs.getString("CODE"));
-				product.setEmail(rs.getString("EMAIL"));
-				product.setId(rs.getLong("ID"));
-				product.setPackageId(rs.getString("PACKAGE_ID"));
-				product.setPhone(rs.getString("PHONE"));				
-			}
-		} catch (Exception e) {
-
-		} finally {
-			closeResource(con, pstm, rs);
-		}
-		return product;
-	}
-	
-	public void updatePaymentLink(String paymentLink, String vaNumber, String invoiceNo) {
-		String sql = "update PRODUCT set PAYMENT_LINK = ?, VA_NUMBER = ? WHERE INVOICE_NO = ?";
-		Connection con = null;
-		PreparedStatement pstm = null;
-		ResultSet rs = null;
-		
-		try {
-			con = JdbcTemplate.getDataSource().getConnection();
-			pstm = con.prepareStatement(sql);
-			pstm.setString(1, paymentLink);
-			pstm.setString(2, vaNumber);
-			pstm.setString(3, invoiceNo);
-			int updateCount = pstm.executeUpdate();	
-			System.out.print(updateCount);
-		} catch (Exception e) {
-			System.out.print(e);
-		} finally {
-			closeResource(con, pstm, rs);
-		}
-	}
-	
 	public void update(Packages packages) {
 		String sql = "update PACKAGES set NAME = ?, PRICE = ?, CATEGORY = ?, TIME = ?, CODE = ?, TEMPLATE = ?, TYPE = ?, SUBJECT = ? WHERE ID = ?";
 		Connection con = null;

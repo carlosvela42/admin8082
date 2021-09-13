@@ -44,6 +44,13 @@ and open the template in the editor.
 					    </select>
 		              </div>
 		              
+		              <div class="form-label-group">
+		                 <label for="inputPhone">Phone</label>
+		                 
+		                <input type="text" id="inputPhone" class="form-control" placeholder="Phone" th:field="*{phone}"></input>
+		                
+		              </div>
+		              
 		               <div class="form-label-group">
 		             	<label for="inputIsCancel">Đã hủy</label>
 		                <select id="inputIsCancel" name="inputIsCancel" class="form-control" th:field="*{isCancel}">

@@ -81,6 +81,9 @@ public class ProductService {
 		if(productSearch.getIsCancel() != null && !"".equals(productSearch.getIsCancel())) {
 			sql += " AND MAP.IS_CANCEL = ?";
 		}
+		if(productSearch.getPhone() != null && !"".equals(productSearch.getPhone())) {
+			sql += " AND USERS.PHONE = ?";
+		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		if(currentPrincipalName != null && !constant.ADMIN_EMAIL.equals(currentPrincipalName)) {
@@ -105,8 +108,12 @@ public class ProductService {
 				pstm.setLong(i, productSearch.getId());
 				i++;
 			}
-			if(productSearch.getIsCancel() != null) {
+			if(productSearch.getIsCancel() != null && !"".equals(productSearch.getIsCancel())) {
 				pstm.setString(i, productSearch.getIsCancel());
+				i++;
+			}
+			if(productSearch.getPhone() != null && !"".equals(productSearch.getPhone())) {
+				pstm.setString(i, productSearch.getPhone());
 				i++;
 			}
 			;
@@ -131,54 +138,7 @@ public class ProductService {
 			closeResource(con, pstm, rs);
 		}
 		return map;
-	}
-	
-	public Product selectByEmail(String email) {
-		String sql = "select * from PRODUCT WHERE EMAIL = ? LIMIT 1";
-		Connection con = null;
-		PreparedStatement pstm = null;
-		ResultSet rs = null;
-		Product product = new Product();
-		try {
-			con = JdbcTemplate.getDataSource().getConnection();
-			pstm = con.prepareStatement(sql);
-			pstm.setString(1, email);
-			rs = pstm.executeQuery();
-			while (rs.next()) {				
-				product.setCode(rs.getString("CODE"));
-				product.setEmail(rs.getString("EMAIL"));
-				product.setId(rs.getLong("ID"));
-				product.setPackageId(rs.getString("PACKAGE_ID"));
-				product.setPhone(rs.getString("PHONE"));				
-			}
-		} catch (Exception e) {
-
-		} finally {
-			closeResource(con, pstm, rs);
-		}
-		return product;
-	}
-	
-	public void updatePaymentLink(String paymentLink, String vaNumber, String invoiceNo) {
-		String sql = "update PRODUCT set PAYMENT_LINK = ?, VA_NUMBER = ? WHERE INVOICE_NO = ?";
-		Connection con = null;
-		PreparedStatement pstm = null;
-		ResultSet rs = null;
-		
-		try {
-			con = JdbcTemplate.getDataSource().getConnection();
-			pstm = con.prepareStatement(sql);
-			pstm.setString(1, paymentLink);
-			pstm.setString(2, vaNumber);
-			pstm.setString(3, invoiceNo);
-			int updateCount = pstm.executeUpdate();	
-			System.out.print(updateCount);
-		} catch (Exception e) {
-			System.out.print(e);
-		} finally {
-			closeResource(con, pstm, rs);
-		}
-	}
+	}		
 	
 	public void update(Users user) {
 		String sql = "update USERS set PHONE = ?, EMAIL = ?, MACHINE_ID = ?, PASSWORD = ? WHERE ID = ?";
@@ -196,6 +156,25 @@ public class ProductService {
 				pstm.setString(4, user.getNewPassword());
 			} else pstm.setString(4, user.getPassword());
 			pstm.setLong(5, user.getId());
+			int updateCount = pstm.executeUpdate();	
+			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
+	public void updateMap() {
+		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = PAY_DATE + 14 WHERE PAY_DATE + 14 < now() AND PACKAGE_ID in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1)";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
 		} catch (Exception e) {
@@ -232,34 +211,43 @@ public class ProductService {
 	}
 	
 	public void updateProduct(Product user) {
-		String sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+		String sql = "";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		
 		try {
 			con = JdbcTemplate.getDataSource().getConnection();
-			pstm = con.prepareStatement(sql);
-			
+		
 			if("Y".equals(user.getIsCancel())) {
+				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+				pstm = con.prepareStatement(sql);
 				pstm.setString(1, user.getPackageId());
-				pstm.setString(2, user.getIsCancel());
-				pstm.setString(3, null);
-				pstm.setDate(4, new java.sql.Date(System.currentTimeMillis()));
+				pstm.setString(2, user.getIsCancel());				
+				pstm.setDate(3, new java.sql.Date(System.currentTimeMillis()));
+				pstm.setString(4, user.getMachineId());
+				pstm.setLong(5, user.getId());
 			} else if(user.getPackageIdNew() != null && !"".equals(user.getPackageIdNew()) && !user.getPackageIdNew().equals(user.getPackageId())){
+				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+				pstm = con.prepareStatement(sql);
 				pstm.setString(1, user.getPackageIdNew());
 				pstm.setString(2, user.getIsCancel());
 				pstm.setDate(3, new java.sql.Date(System.currentTimeMillis()));
 				pstm.setString(4, null);
+				pstm.setString(5, user.getMachineId());
+				pstm.setLong(6, user.getId());
 				//doi goi cuoc neu gia han thi ko cap nhat, ngc lai cap nhat va goi sang epay
 			} else {
+				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+				pstm = con.prepareStatement(sql);
 				pstm.setString(1, user.getPackageId());
 				pstm.setString(2, user.getIsCancel());
 				pstm.setString(3, user.getPaydate());
 				pstm.setString(4, null);
+				pstm.setString(5, user.getMachineId());
+				pstm.setLong(6, user.getId());
 			}
-			pstm.setString(5, user.getMachineId());
-			pstm.setLong(6, user.getId());
+			
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
 		} catch (Exception e) {

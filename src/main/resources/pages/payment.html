@@ -67,7 +67,7 @@ and open the template in the editor.
 				            <th>Ngày thanh toán</th>
 				            <th>Ngày thanh toán tiếp</th>
 				            <th>Code</th>
-
+							<th>Edit</th>  
 				        </tr>  
 				        <tr th:each="p : ${payment}">  
 				            <td th:text="${p.email}"></td>  
@@ -79,6 +79,11 @@ and open the template in the editor.
 				        	<td th:text="${p.epayDate}"></td>
 				        	<td th:text="${p.nextPayDate}"></td>
 				        	<td th:text="${p.code}"></td>
+				        	<td>  
+				                <a th:href="@{/editPayment?id={id}(id=${p.id})}" class="btn btn-primary">Edit</a>
+				                
+				                 
+				            </td> 
 				        </tr>  
 				        
 				    </table> 

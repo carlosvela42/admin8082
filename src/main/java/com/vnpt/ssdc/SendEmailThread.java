@@ -65,27 +65,23 @@ public class SendEmailThread implements Runnable{
 				recipient_ls = commonConfig.getProperty("email.recipient");
 			
 			
-			String[] recipientList = recipient_ls.split(",");
-			InternetAddress[] recipientAddress = new InternetAddress[recipientList.length];
-			int counter = 0;
+			String[] recipientList = recipient_ls.split(",");			
 			
-			for (String recipient : recipientList) {
-			    recipientAddress[counter] = new InternetAddress(recipient.trim());
-			    counter++;
-			}
-			
-			mymsg.setRecipients(Message.RecipientType.TO, recipientAddress);
-			
-			mymsg.saveChanges();
 			Transport trans = null;
-			
 			trans = session.getTransport("smtp");
 			final String username = commonConfig.getProperty("email.username");
 	        final String password = commonConfig.getProperty("email.password");
 			trans.connect(username, password);
-			trans.sendMessage(mymsg, mymsg.getAllRecipients());
-			
-			log.info("Send alert mail DONE");
+			for (String recipient : recipientList) {
+				InternetAddress[] recipientAddress = new InternetAddress[1];
+				recipientAddress[0] = new InternetAddress(recipient.trim());
+
+			    mymsg.setRecipients(Message.RecipientType.TO, recipientAddress);
+			    mymsg.saveChanges();
+			    trans.sendMessage(mymsg, mymsg.getAllRecipients());
+			    log.info("Send alert mail DONE");
+			}
+		
 		} catch (Exception e) {
 			log.info("Send alert email exception: ",e);
 		}

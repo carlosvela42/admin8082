@@ -2,6 +2,8 @@ package com.vnpt.ssdc.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,4 +51,20 @@ public class PaymentController {
 		mav.addObject("packages", packages);
 		return mav;
     }
+	
+	@RequestMapping("/editPayment")
+	public ModelAndView editPayment(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("edit_payment");
+		Payment paymentSearch = new Payment();
+		paymentSearch.setId(Long.parseLong(request.getParameter("id")));
+		List<Payment> payment = paymentService.listAll(paymentSearch);
+		if(payment.size() > 0) {
+			mav.addObject("payment", payment.get(0));
+		}
+		else mav.addObject("payment", new Product());
+		List<Packages> packages = packagesService.listAll();
+		
+		mav.addObject("packages", packages);
+		return mav;
+	}
 }
