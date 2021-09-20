@@ -42,6 +42,8 @@ public class Product {
 	private String paydate;
 	
 	private String endDate;
+	
+	private String linkFb;
 
 	public Product() {
 	}
@@ -191,6 +193,14 @@ public class Product {
 
 	public void setPackageIdNew(String packageIdNew) {
 		this.packageIdNew = packageIdNew;
+	}
+
+	public String getLinkFb() {
+		return linkFb;
+	}
+
+	public void setLinkFb(String linkFb) {
+		this.linkFb = linkFb;
 	}
 	
 }

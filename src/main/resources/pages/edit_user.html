@@ -35,7 +35,7 @@ and open the template in the editor.
 				              <div class="form-label-group">
 				              
 				                <input type="hidden" id="inputId" class="form-control" th:field="*{id}"></input>
-				                <input type="hidden" id="inputPayDate" class="form-control" th:field="*{paydate}"></input>
+				               
 				                <label for="inputName">Email</label>
 				                <input type="text" id="inputEmail" class="form-control" placeholder="Email" disabled="disabled" th:field="*{email}" ></input>
 				                
@@ -52,6 +52,16 @@ and open the template in the editor.
 				            	<label for="inputMachineId">Machine id</label>
 				                <input type="text" id="inputMachineId" class="form-control" placeholder="Machine id" th:field="*{machineId}" ></input>
 				            </div>
+				            <div class="form-label-group">
+				              	<label for="inputPayDate">Ngày bắt đầu</label>
+				                <input type="date" id="inputPayDate" class="form-control" th:field="*{paydate}"></input>
+				                
+				              </div>
+				              <div class="form-label-group">
+				              	<label for="inputLinkFb">Link fb</label>
+				                <input type="text" id="inputLinkFb" class="form-control" placeholder="Link fb" th:field="*{linkFb}"></input>
+				                
+				              </div>
 							<div class="form-label-group">
 				              <label for="inputPackage">Gói cước cũ</label>
 				                <input type="hidden" class="form-control" th:field="*{packageId}"></input>

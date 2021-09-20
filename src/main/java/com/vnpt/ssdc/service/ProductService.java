@@ -68,7 +68,7 @@ public class ProductService {
 	
 	public List<Product> listAll(Product productSearch) {
 		List<Product> map = new ArrayList<Product>();
-		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
+		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD,USERS.LINK_FB LINK_FB, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
 		if(productSearch.getEmail() != null && !"".equals(productSearch.getEmail())) {
 			sql += " AND USERS.EMAIL = ?";
 		}
@@ -130,6 +130,7 @@ public class ProductService {
 				product.setId(rs.getLong("ID"));
 				product.setPassword(rs.getString("PASSWORD"));
 				product.setPaydate(rs.getString("PAY_DATE"));
+				product.setLinkFb(rs.getString("LINK_FB"));
 				map.add(product);
 			}
 		} catch (Exception e) {
@@ -185,7 +186,7 @@ public class ProductService {
 	}
 	
 	public void update(Product product) {
-		String sql = "update USERS set PHONE = ?, PASSWORD = ? WHERE EMAIL = ?";
+		String sql = "update USERS set PHONE = ?, PASSWORD = ?, LINK_FB = ? WHERE EMAIL = ?";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
@@ -195,11 +196,12 @@ public class ProductService {
 			pstm = con.prepareStatement(sql);
 			pstm.setString(1, product.getPhone());
 			pstm.setString(2, product.getPassword());
+			pstm.setString(3, product.getLinkFb());
 			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String currentPrincipalName = authentication.getName();
 			
-			pstm.setString(3, currentPrincipalName);
+			pstm.setString(4, currentPrincipalName);
 			
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
