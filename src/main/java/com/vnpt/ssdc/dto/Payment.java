@@ -18,6 +18,10 @@ public class Payment {
 	private String status;
 	private String nextPayDate;
 	private String code;
+	private String payDate;
+	private String nextPayDateStart;
+	private String nextPayDateEnd;
+	private Long mapId;
 	
 	public Payment() {
 	}
@@ -125,6 +129,38 @@ public class Payment {
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public String getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(String payDate) {
+		this.payDate = payDate;
+	}
+
+	public String getNextPayDateStart() {
+		return nextPayDateStart;
+	}
+
+	public void setNextPayDateStart(String nextPayDateStart) {
+		this.nextPayDateStart = nextPayDateStart;
+	}
+
+	public String getNextPayDateEnd() {
+		return nextPayDateEnd;
+	}
+
+	public void setNextPayDateEnd(String nextPayDateEnd) {
+		this.nextPayDateEnd = nextPayDateEnd;
+	}
+
+	public Long getMapId() {
+		return mapId;
+	}
+
+	public void setMapId(Long mapId) {
+		this.mapId = mapId;
 	}
 
 	

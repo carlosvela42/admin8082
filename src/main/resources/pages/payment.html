@@ -32,7 +32,16 @@ and open the template in the editor.
 			                <input type="text" id="inputEmail" class="form-control" placeholder="Email" autofocus="autofocus" th:field="*{email}"></input>
 			                
 			              </div>
-			              
+			              <div class="form-label-group">
+			              	<label for="inputPhone">Phone</label>
+			                <input type="text" id="inputPhone" class="form-control" placeholder="Phone" th:field="*{phone}"></input>
+			                
+			              </div>
+			              <div class="form-label-group">
+			              	<label for="inputMachineId">Machine id</label>
+			                <input type="text" id="inputMachineId" class="form-control" placeholder="Machine Id" th:field="*{machineId}"></input>
+			                
+			              </div>
 			           <div class="form-label-group">
 			              	<label for="inputPackage">Gói</label>
 			                <select class="form-control" id="inputPackage" name="inputPackage" th:field="*{packageId}">
@@ -43,7 +52,7 @@ and open the template in the editor.
 						    </select>
 			              </div>
 			           <div class="form-label-group">
-			              	<label for="inputEmail">Ngày bắt đầu</label>
+			              	<label for="inputEpayDateStart">Ngày bắt đầu</label>
 			                <input type="date" id="inputEpayDateStart" class="form-control" placeholder="Ngày bắt đầu" th:field="*{epayDateStart}"></input>
 			                
 			              </div>
@@ -51,7 +60,17 @@ and open the template in the editor.
 			              	<label for="inputEpayDateEnd">Ngày kết thúc</label>
 			                <input type="date" id="inputEpayDateEnd" class="form-control" placeholder="Ngày kết thúc" th:field="*{epayDateEnd}"></input>
 			                
-			              </div> 
+			              </div>
+			              <div class="form-label-group">
+			              	<label for="inputNextPayDateStart">Ngày hủy bắt đầu</label>
+			                <input type="date" id="inputNextPayDateStart" class="form-control" placeholder="Ngày hủy bắt đầu" th:field="*{nextPayDateStart}"></input>
+			                
+			              </div>
+			           <div class="form-label-group">
+			              	<label for="inputNextPayDateEnd">Ngày hủy kết thúc</label>
+			                <input type="date" id="inputNextPayDateEnd" class="form-control" placeholder="Ngày hủy kết thúc" th:field="*{nextPayDateEnd}"></input>
+			                
+			              </div>  
 			              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button>        
 					</form> 
 					

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vnpt.ssdc.dto.Packages;
@@ -65,6 +66,23 @@ public class PaymentController {
 		List<Packages> packages = packagesService.listAll();
 		
 		mav.addObject("packages", packages);
+		return mav;
+	}
+	
+	@RequestMapping(value = "/savePayment", method = RequestMethod.POST)
+	public ModelAndView savePayment(@ModelAttribute("payment") Payment paymentSearch) {
+		paymentService.updateMap(paymentSearch);
+		paymentService.updatePayment(paymentSearch);
+		if("3".equals(paymentSearch.getStatus())) {
+			paymentService.updateIsCancel(paymentSearch);
+		}
+		ModelAndView mav = new ModelAndView("payment");
+		List<Payment> payment = paymentService.listAll(paymentSearch);		
+		mav.addObject("payment", payment);	
+		List<Packages> packages = packagesService.listAll();
+		
+		mav.addObject("packages", packages);
+		mav.addObject("paymentSearch", paymentSearch);	
 		return mav;
 	}
 }

@@ -29,50 +29,38 @@ and open the template in the editor.
 				          </div>
 				          <div class="card-body">
 				            <h5 class="card-title text-center">Sửa thông tin</h5>
-				            <form class="form-signin" action="#" th:action="@{/saveUser}" th:object="${payment}"
+				            <form class="form-signin" action="#" th:action="@{/savePayment}" th:object="${payment}"
 							method="post">
-								
+								<div class="form-label-group">
+					            	<label for="inputMachineId">Machine id</label>
+					            	<input type="hidden" id="inputId" class="form-control" th:field="*{id}"></input>
+					            	<input type="hidden" id="inputMapId" class="form-control" th:field="*{mapId}"></input>
+					                <input type="text" id="inputMachineId" class="form-control" placeholder="Machine id" th:field="*{machineId}" ></input>
+					            </div>
 				              <div class="form-label-group">
-				              
-				                <input type="hidden" id="inputId" class="form-control" th:field="*{id}"></input>
-				                <input type="hidden" id="inputPayDate" class="form-control" th:field="*{paydate}"></input>
-				                <label for="inputName">Email</label>
-				                <input type="text" id="inputEmail" class="form-control" placeholder="Email" disabled="disabled" th:field="*{email}" ></input>
-				                
-				              </div>
-				            <div class="form-label-group">
-				            	<label for="inputName">Phone</label>
-				                <input type="text" id="inputPhone" class="form-control" placeholder="Phone" th:field="*{phone}" ></input>
-				            </div>
-				            <div class="form-label-group">
-				            	<label for="inputName">Password</label>
-				                <input type="text" id="inputPassword" class="form-control" placeholder="Password" th:field="*{password}" ></input>
-				            </div>
-				            <div class="form-label-group">
-				            	<label for="inputMachineId">Machine id</label>
-				                <input type="text" id="inputMachineId" class="form-control" placeholder="Machine id" th:field="*{machineId}" ></input>
-				            </div>
+					            	<label for="inputCode">Code</label>
+					                <input type="text" id="inputCode" class="form-control" placeholder="Code" th:field="*{code}" ></input>
+					            </div>
+				           <div class="form-label-group">
+			              	<label for="inputEpayDate">Ngày thanh toán</label>
+			                <input type="date" id="inputEpayDate" class="form-control" placeholder="Ngày thanh toán" th:field="*{epayDate}"></input>
+			                
+			              </div>
+			      
+			              <div class="form-label-group">
+			              	<label for="inputNextPayDate">Ngày thanh toán tiếp </label>
+			                <input type="date" id="inputNextPayDate" class="form-control" placeholder="Ngày thanh toán tiếp" th:field="*{nextPayDate}"></input>
+			                
+			              </div>
+			          
 							<div class="form-label-group">
-				              <label for="inputPackage">Gói cước cũ</label>
-				                <input type="hidden" class="form-control" th:field="*{packageId}"></input>
-								<input type="text" disabled="disabled" id="inputPackage" class="form-control" th:field="*{packageName}"></input>
-				              </div>
-				             <div class="form-label-group">
-				              <label for="inputPackage">Gói cước mới</label>
-				                
-								<select class="form-control" id="inputPackageNew" name="inputPackageNew" th:field="*{packageIdNew}">
-							        <option value="">Chọn gói</option>
-							        <option th:each="packages : ${packages}"
-							                th:value="${packages.id}"
-							                th:text="${packages.category}+' : '+${packages.name}"></option>
-							    </select>
-				              </div>
-							<div class="form-label-group">
-				              <label for="inputIsCancel">Đã hủy</label>
-				               <select id="inputIsCancel" name="inputIsCancel" class="form-control" th:field="*{isCancel}">
+				              <label for="inputStatus">Trạng thái</label>
+				               <select id="inputStatus" name="inputStatus" class="form-control" th:field="*{status}">
 									<option value="" selected="selected"></option>
-									<option value="Y">Hủy gói cước</option>
-									<option value="N">Chưa hủy</option>
+									<option value="0">Chưa thanh toán</option>
+									<option value="1">Chuyển khoản</option>
+									<option value="2">Đã thanh toán qua VNPT Epay</option>
+									<option value="3">Hủy</option>
 								</select>
 				              </div>
 				              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Cập nhật</button>

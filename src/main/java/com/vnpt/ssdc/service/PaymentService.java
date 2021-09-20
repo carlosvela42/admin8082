@@ -42,7 +42,7 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,'success' status, b.next_pay_date, b.code from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
+		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
 		if(payment.getEpayDateStart() != null && !"".equals(payment.getEpayDateStart())) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}
@@ -57,6 +57,21 @@ public class PaymentService {
 		}
 		if(payment.getId() != null && !"".equals(payment.getId())) {
 			sql += " and a.id = " + payment.getId();
+		}
+		if(payment.getPhone() != null && !"".equals(payment.getPhone())) {
+			sql += " and d.phone = '" + payment.getPhone() + "'";
+		}
+		if(payment.getMachineId() != null && !"".equals(payment.getMachineId())) {
+			sql += " and b.machine_id = '" + payment.getMachineId() + "'";
+		}
+		if(payment.getStatus() != null && !"".equals(payment.getStatus())) {
+			sql += " and a.status = '" + payment.getStatus() + "'";
+		}
+		if(payment.getNextPayDateStart() != null && !"".equals(payment.getNextPayDateStart())) {
+			sql += " and a.epay_date >= '" + payment.getNextPayDateStart() + "'";
+		}
+		if(payment.getNextPayDateEnd() != null && !"".equals(payment.getNextPayDateEnd())) {
+			sql += " and a.epay_date <= '" + payment.getNextPayDateEnd() + "'";
 		}
 		Connection con = null;
 		PreparedStatement pstm = null;
@@ -78,6 +93,8 @@ public class PaymentService {
 				pm.setNextPayDate(rs.getString("NEXT_PAY_DATE"));
 				pm.setCode(rs.getString("CODE"));
 				pm.setId(rs.getLong("ID"));
+				pm.setPayDate(rs.getString("PAY_DATE"));
+				pm.setMapId(rs.getLong("MAP_ID"));
 				totalAmount += Long.parseLong(rs.getString("PRICE"));
 				map.add(pm);
 			}
@@ -91,6 +108,71 @@ public class PaymentService {
 			closeResource(con, pstm, rs);
 		}
 		return map;
+	}
+	
+	public void updatePayment(Payment payment) {
+		String sql = "update PAYMENT set STATUS = ?, EPAY_DATE = ? WHERE ID = ?";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			pstm.setString(1, payment.getStatus());
+			pstm.setString(2, payment.getEpayDate());
+			pstm.setLong(3, payment.getId());
+			int updateCount = pstm.executeUpdate();	
+			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
+	public void updateIsCancel(Payment payment) {
+		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = ? WHERE ID = ?";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			
+			pstm.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+			pstm.setLong(2, payment.getMapId());
+			int updateCount = pstm.executeUpdate();	
+			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
+	public void updateMap(Payment payment) {
+		String sql = "update MAP set MACHINE_ID = ?, CODE = ?, PAY_DATE = ?, NEXT_PAY_DATE = ? WHERE ID = ?";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			pstm.setString(1, payment.getMachineId());
+			pstm.setString(2, payment.getCode());
+			pstm.setString(3, payment.getEpayDate());
+			pstm.setString(4, payment.getNextPayDate());
+			pstm.setLong(5, payment.getMapId());
+			int updateCount = pstm.executeUpdate();	
+			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
 	}
     
     private void closeResource(Connection con, PreparedStatement pstm, ResultSet rs) {
