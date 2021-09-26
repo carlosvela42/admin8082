@@ -16,6 +16,7 @@ public class Payment {
 	private String phone;
 	private String machineId;
 	private String status;
+	private String statusName;
 	private String nextPayDate;
 	private String code;
 	private String payDate;
@@ -161,6 +162,14 @@ public class Payment {
 
 	public void setMapId(Long mapId) {
 		this.mapId = mapId;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 	}
 
 	

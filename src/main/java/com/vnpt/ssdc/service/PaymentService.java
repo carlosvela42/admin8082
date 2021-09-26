@@ -42,7 +42,7 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1";
+		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1 and (status != '3' || status is null) ";
 		if(payment.getEpayDateStart() != null && !"".equals(payment.getEpayDateStart())) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}
@@ -67,11 +67,9 @@ public class PaymentService {
 		if(payment.getStatus() != null && !"".equals(payment.getStatus())) {
 			sql += " and a.status = '" + payment.getStatus() + "'";
 		}
-		if(payment.getNextPayDateStart() != null && !"".equals(payment.getNextPayDateStart())) {
-			sql += " and a.epay_date >= '" + payment.getNextPayDateStart() + "'";
-		}
-		if(payment.getNextPayDateEnd() != null && !"".equals(payment.getNextPayDateEnd())) {
-			sql += " and a.epay_date <= '" + payment.getNextPayDateEnd() + "'";
+	
+		if(payment.getNextPayDate() != null && !"".equals(payment.getNextPayDate())) {
+			sql += " and b.next_pay_date = '" + payment.getNextPayDate() + "'";
 		}
 		Connection con = null;
 		PreparedStatement pstm = null;
@@ -90,6 +88,23 @@ public class PaymentService {
 				pm.setPhone(rs.getString("PHONE"));
 				pm.setMachineId(rs.getString("MACHINE_ID"));
 				pm.setStatus(rs.getString("STATUS"));
+				switch(rs.getString("STATUS") + "") {
+				  case "0":
+					  pm.setStatusName("Chưa thanh toán");
+				    break;
+				  case "1":
+					  pm.setStatusName("Chuyển khoản");
+				    break;
+				  case "2":
+					  pm.setStatusName("Đã thanh toán qua VNPT Epay");
+				    break;
+				  case "3":
+					  pm.setStatusName("Hủy");
+				    break;
+				  default:
+					  pm.setStatusName("");
+				}
+				
 				pm.setNextPayDate(rs.getString("NEXT_PAY_DATE"));
 				pm.setCode(rs.getString("CODE"));
 				pm.setId(rs.getLong("ID"));

@@ -42,6 +42,16 @@ and open the template in the editor.
 			                <input type="text" id="inputMachineId" class="form-control" placeholder="Machine Id" th:field="*{machineId}"></input>
 			                
 			              </div>
+			              <div class="form-label-group">
+			              	<label for="inputStatus">Trạng thái</label>
+			                <select id="inputStatus" name="inputStatus" class="form-control" th:field="*{status}">
+									<option value="" selected="selected"></option>
+									<option value="0">Chưa thanh toán</option>
+									<option value="1">Chuyển khoản</option>
+									<option value="2">Đã thanh toán qua VNPT Epay</option>
+									<option value="3">Hủy</option>
+								</select>
+			              </div>
 			           <div class="form-label-group">
 			              	<label for="inputPackage">Gói</label>
 			                <select class="form-control" id="inputPackage" name="inputPackage" th:field="*{packageId}">
@@ -62,19 +72,16 @@ and open the template in the editor.
 			                
 			              </div>
 			              <div class="form-label-group">
-			              	<label for="inputNextPayDateStart">Ngày hủy bắt đầu</label>
-			                <input type="date" id="inputNextPayDateStart" class="form-control" placeholder="Ngày hủy bắt đầu" th:field="*{nextPayDateStart}"></input>
+			              	<label for="inputNextPayDateStart">Ngày thanh toán tiếp theo</label>
+			                <input type="date" id="inputNextPayDateStart" class="form-control" placeholder="Ngày thanh toán tiếp theo" th:field="*{nextPayDate}"></input>
 			                
 			              </div>
-			           <div class="form-label-group">
-			              	<label for="inputNextPayDateEnd">Ngày hủy kết thúc</label>
-			                <input type="date" id="inputNextPayDateEnd" class="form-control" placeholder="Ngày hủy kết thúc" th:field="*{nextPayDateEnd}"></input>
-			                
-			              </div>  
-			              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button>        
+			           
+			              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button> 
+			              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick="excel()">Excel</button>       
 					</form> 
 					
-					<table class="table table-active" id="headerTable">  
+					<table class="dataTable-table" id="headerTable">  
 				        <tr>  
 				            <th>Email</th>  
 				            <th>Gói</th>	
@@ -94,7 +101,7 @@ and open the template in the editor.
 				             <td th:text="${p.price}"></td>
 				             	<td th:text="${p.phone}"></td>
 				             	<td th:text="${p.machineId}"></td>
-				             	<td th:text="${p.status}"></td>		
+				             	<td th:text="${p.statusName}"></td>		
 				        	<td th:text="${p.epayDate}"></td>
 				        	<td th:text="${p.nextPayDate}"></td>
 				        	<td th:text="${p.code}"></td>

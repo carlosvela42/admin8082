@@ -1,4 +1,4 @@
-function sendMail(){
+			function sendMail(){
 	    		var content = CKEDITOR.instances['content'].getData();
 	    		var subject = $('#subject').val();
 	    		var selected = [];

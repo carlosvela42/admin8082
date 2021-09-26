@@ -64,7 +64,7 @@ and open the template in the editor.
 		              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Tìm kiếm</button>
 		              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick="excel()">Excel</button>
 		            </form>  
-				    <table class="table table-active" id="headerTable">  
+				    <table class="dataTable-table" id="headerTable">  
 				        <tr>  
 				            <th>Email</th>  
 				            <th>Gói</th>	
@@ -74,7 +74,8 @@ and open the template in the editor.
 				            <th>Machine ID</th>	
 				            <th>Ngày bắt đầu tham gia</th>	
 				            <th>Ngày hủy</th>	
-				            <th>Mã giảm giá</th>	             
+				            <th>Mã giảm giá</th>
+				            <th>Link fb</th>		             
 				            <th>Edit</th>  
 				            <th> <input type="checkbox" onClick="toggle(this)" value=""></input></th> 
 				        </tr>  
@@ -88,6 +89,7 @@ and open the template in the editor.
 				             <td th:text="${user.paydate}"></td>
 				             <td th:text="${user.endDate}"></td>
 				             <td th:text="${user.code}"></td>
+				             <td th:text="${user.linkFb}"></td>
 				            <td>  
 				                <a th:href="@{/editUser?id={id}(id=${user.id})}" class="btn btn-primary">Edit</a>
 				                

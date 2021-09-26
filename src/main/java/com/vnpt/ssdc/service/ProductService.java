@@ -30,7 +30,7 @@ public class ProductService {
 	
 	public List<Product> listAll() {
 		List<Product> map = new ArrayList<Product>();
-		String sql = "select USERS.EMAIL EMAIL, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.END_DATE END_DATE, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT, MAP.PAY_DATE PAY_DATE, MAP.CODE CODE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID ";
+		String sql = "select USERS.EMAIL EMAIL, USERS.PHONE PHONE,USERS.LINK_FB LINK_FB, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.END_DATE END_DATE, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT, MAP.PAY_DATE PAY_DATE, MAP.CODE CODE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID ";
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String currentPrincipalName = authentication.getName();
 		if(currentPrincipalName != null && !constant.ADMIN_EMAIL.equals(currentPrincipalName)) {
@@ -55,6 +55,7 @@ public class ProductService {
 				product.setPaydate(rs.getString("PAY_DATE"));
 				product.setEndDate(rs.getString("END_DATE"));
 				product.setCode(rs.getString("CODE"));
+				product.setLinkFb(rs.getString("LINK_FB"));
 				product.setId(rs.getLong("ID"));	
 				map.add(product);
 			}
