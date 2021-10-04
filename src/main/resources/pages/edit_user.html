@@ -32,13 +32,9 @@ and open the template in the editor.
 				            <form class="form-signin" action="#" th:action="@{/saveUser}" th:object="${user}"
 							method="post">
 								
-				              <div class="form-label-group">
-				              
-				                <input type="hidden" id="inputId" class="form-control" th:field="*{id}"></input>
-				               
-				                <label for="inputName">Email</label>
-				                <input type="text" id="inputEmail" class="form-control" placeholder="Email" disabled="disabled" th:field="*{email}" ></input>
-				                
+				              <div class="form-label-group">				              
+				                <input type="hidden" id="inputId" class="form-control" th:field="*{id}"></input>				               			                
+				                <input type="hidden" id="inputEmail" class="form-control" th:field="*{email}" ></input>				                
 				              </div>
 				            <div class="form-label-group">
 				            	<label for="inputName">Phone</label>
