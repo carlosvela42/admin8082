@@ -3,8 +3,6 @@ package com.vnpt.ssdc.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -223,25 +221,21 @@ public class ProductService {
 		
 		try {
 			con = JdbcTemplate.getDataSource().getConnection();
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	        Date date = new Date();
-	        
+		
 			if("Y".equals(user.getIsCancel())) {
-				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, END_DATE = now(), MACHINE_ID = ? WHERE ID = ?";
 				pstm = con.prepareStatement(sql);
 				pstm.setString(1, user.getPackageId());
-				pstm.setString(2, user.getIsCancel());				
-				pstm.setString(3, dateFormat.format(date));
-				pstm.setString(4, user.getMachineId());
-				pstm.setLong(5, user.getId());
+				pstm.setString(2, user.getIsCancel());								
+				pstm.setString(3, user.getMachineId());
+				pstm.setLong(4, user.getId());
 			} else if(user.getPackageIdNew() != null && !"".equals(user.getPackageIdNew()) && !user.getPackageIdNew().equals(user.getPackageId())){
-				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = ?, END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
+				sql = "update MAP set PACKAGE_ID = ?, IS_CANCEL = ?, PAY_DATE = now(), END_DATE = ?, MACHINE_ID = ? WHERE ID = ?";
 				pstm = con.prepareStatement(sql);
 				pstm.setString(1, user.getPackageIdNew());
 				pstm.setString(2, user.getIsCancel());
-				pstm.setString(3, dateFormat.format(date));
-				pstm.setString(4, null);
-				pstm.setString(5, user.getMachineId());
+				pstm.setString(3, null);
+				pstm.setString(4, user.getMachineId());
 				pstm.setLong(6, user.getId());
 				//doi goi cuoc neu gia han thi ko cap nhat, ngc lai cap nhat va goi sang epay
 			} else {
