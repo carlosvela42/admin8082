@@ -8,7 +8,41 @@ and open the template in the editor.
     <head th:replace="includes/header :: header"> </head>
     
     <body class="sb-nav-fixed">
-         
+     <script th:inline="javascript">
+	/*<![CDATA[*/
+	
+	    var user = /*[[${users}]]*/ 'default';
+	    
+	
+	/*]]>*/
+	</script>
+     <script>
+	    $(document).ready(function () {
+	    	
+	    	$('#headerTable').DataTable({
+	            data: user,
+	            columns: [
+	                { data: 'email' },
+	                { data: 'packageName' },
+	                { data: 'isCancel' },
+	                { data: 'totalAmount' },
+	                { data: 'phone' },
+	                { data: 'machineId' },
+	                { data: 'paydate' },
+	                { data: 'endDate' },
+	                { data: 'code' },
+	                { data: 'linkFb' },
+	                { data: function(o) { 
+	                    return '<a class="btn btn-primary" href="/editUser?id=' + o.id + '">Edit</a>';
+	                }  },
+	                { data: function(o, val) { 
+	                    return '<input type="checkbox" class="chbox" value="" name="' + o.email + '"></input>';
+	                } }
+	            ],
+	            "pageLength": 10
+	        });
+	    });
+	</script>    
          <nav th:replace="includes/nav :: nav"> </nav>
          <div id="layoutSidenav">
             <div th:replace="includes/sideNav :: sideNav"> </div>
@@ -65,21 +99,23 @@ and open the template in the editor.
 		              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick="excel()">Excel</button>
 		            </form>  
 				    <table class="dataTable-table" id="headerTable">  
-				        <tr>  
-				            <th>Email</th>  
-				            <th>Gói</th>	
-				            <th>Đã hủy</th>
-				            <th>Số tiền đã chi tiêu</th>
-				            <th>Phone</th>	
-				            <th>Machine ID</th>	
-				            <th>Ngày bắt đầu tham gia</th>	
-				            <th>Ngày hủy</th>	
-				            <th>Mã giảm giá</th>
-				            <th>Link fb</th>		             
-				            <th>Edit</th>  
-				            <th> <input type="checkbox" onClick="toggle(this)" value=""></input></th> 
-				        </tr>  
-				        <tr th:each="user : ${users}">  
+				        <thead>
+					        <tr>  
+					            <th>Email</th>  
+					            <th>Gói</th>	
+					            <th>Đã hủy</th>
+					            <th>Số tiền đã chi tiêu</th>
+					            <th>Phone</th>	
+					            <th>Machine ID</th>	
+					            <th>Ngày bắt đầu tham gia</th>	
+					            <th>Ngày hủy</th>	
+					            <th>Mã giảm giá</th>
+					            <th>Link fb</th>		             
+					            <th>Edit</th>  
+					            <th> <input type="checkbox" onClick="toggle(this)" value=""></input></th> 
+					        </tr>
+				         </thead>  
+				        <!-- <tr th:each="user : ${users}">  
 				            <td th:text="${user.email}"></td>  
 				            <td th:text="${user.packageName}"></td>  
 				            <td th:text="${user.isCancel}"></td>
@@ -100,7 +136,7 @@ and open the template in the editor.
 				                <input type="checkbox" class="chbox" th:id="${user.email}" th:name="${user.email}" value=""></input>
 				                 
 				            </td>   
-				        </tr>  
+				        </tr> -->  
 				        
 				    </table> 
 				    <iframe id="txtArea1" style="display:none"></iframe> 
