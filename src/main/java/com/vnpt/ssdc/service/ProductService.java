@@ -198,11 +198,7 @@ public class ProductService {
 			pstm.setString(1, product.getPhone());
 			pstm.setString(2, product.getPassword());
 			pstm.setString(3, product.getLinkFb());
-			
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String currentPrincipalName = authentication.getName();
-			
-			pstm.setString(4, currentPrincipalName);
+			pstm.setString(4, product.getEmail());			
 			
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
