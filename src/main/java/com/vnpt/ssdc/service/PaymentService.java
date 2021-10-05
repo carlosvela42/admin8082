@@ -42,7 +42,7 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1 and (status != '3' || status is null) ";
+		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1 and (status != '3' || status is null) AND c.id not in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1) ";
 		if(payment.getEpayDateStart() != null && !"".equals(payment.getEpayDateStart())) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}
@@ -168,19 +168,29 @@ public class PaymentService {
 	}
 	
 	public void updateMap(Payment payment) {
-		String sql = "update MAP set MACHINE_ID = ?, CODE = ?, PAY_DATE = ?, NEXT_PAY_DATE = ? WHERE ID = ?";
+		String sql = "update MAP set MACHINE_ID = ?, CODE = ?, PAY_DATE = ?";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
 		
 		try {
 			con = JdbcTemplate.getDataSource().getConnection();
+			if(payment.getNextPayDate() == null || "".equals(payment.getNextPayDate())) {
+				sql += " WHERE ID = ?";
+			} else {
+				sql += " , NEXT_PAY_DATE = ? WHERE ID = ? ";
+			}
 			pstm = con.prepareStatement(sql);
 			pstm.setString(1, payment.getMachineId());
 			pstm.setString(2, payment.getCode());
 			pstm.setString(3, payment.getEpayDate());
-			pstm.setString(4, payment.getNextPayDate());
-			pstm.setLong(5, payment.getMapId());
+			if(payment.getNextPayDate() == null || "".equals(payment.getNextPayDate())) {
+				pstm.setLong(4, payment.getMapId());
+			} else {
+				pstm.setString(4, payment.getNextPayDate());
+				pstm.setLong(5, payment.getMapId());
+			}
+			
 			int updateCount = pstm.executeUpdate();	
 			System.out.print(updateCount);
 		} catch (Exception e) {

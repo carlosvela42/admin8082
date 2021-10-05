@@ -168,7 +168,7 @@ public class ProductService {
 	}
 	
 	public void updateMap() {
-		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = PAY_DATE + 14 WHERE PAY_DATE + 14 < now() AND PACKAGE_ID in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1)";
+		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = DATE_ADD(PAY_DATE, INTERVAL 14 DAY) WHERE DATE_ADD(PAY_DATE, INTERVAL 14 DAY) < now() AND PACKAGE_ID in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1)";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
