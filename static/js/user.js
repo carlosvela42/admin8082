@@ -35,8 +35,7 @@
 			        txtArea1.document.open("txt/html","replace");
 			        txtArea1.document.write(tab_text);
 			        txtArea1.document.close();
-			        txtArea1.focus(); 
-					txtArea1.document.execCommand("fontName", false, "Arial");
+			        txtArea1.focus(); 	
 			        sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
 			    }  
 			    else                 //other browser not tested on IE 11
