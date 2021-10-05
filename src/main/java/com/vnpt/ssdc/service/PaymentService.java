@@ -146,6 +146,26 @@ public class PaymentService {
 		}
 	}
 	
+	public void updateNextPayDate(Payment payment) {
+		String sql = "update MAP set NEXT_PAY_DATE = DATE_ADD(now(), INTERVAL (SELECT TIME FROM PACKAGES WHERE ID = PACKAGE_ID) DAY) WHERE ID = ?";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+		
+		try {
+			con = JdbcTemplate.getDataSource().getConnection();
+			pstm = con.prepareStatement(sql);
+			pstm.setLong(1, payment.getMapId());
+			
+			int updateCount = pstm.executeUpdate();	
+			System.out.print(updateCount);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
 	public void updateIsCancel(Payment payment) {
 		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = ? WHERE ID = ?";
 		Connection con = null;

@@ -76,6 +76,9 @@ public class PaymentController {
 		if("3".equals(paymentSearch.getStatus())) {
 			paymentService.updateIsCancel(paymentSearch);
 		}
+		if("1".equals(paymentSearch.getStatus())) {
+			paymentService.updateNextPayDate(paymentSearch);
+		}
 		ModelAndView mav = new ModelAndView("payment");
 		List<Payment> payment = paymentService.listAll(paymentSearch);		
 		mav.addObject("payment", payment);	
