@@ -167,7 +167,7 @@ public class PaymentService {
 	}
 	
 	public void updateIsCancel(Payment payment) {
-		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = ? WHERE ID = ?";
+		String sql = "update MAP set IS_CANCEL = 'Y', END_DATE = ?, TOTAL_AMOUNT = 0 WHERE ID = ?";
 		Connection con = null;
 		PreparedStatement pstm = null;
 		ResultSet rs = null;

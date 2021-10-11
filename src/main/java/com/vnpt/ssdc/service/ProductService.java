@@ -69,7 +69,7 @@ public class ProductService {
 	
 	public List<Product> listAll(Product productSearch) {
 		List<Product> map = new ArrayList<Product>();
-		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD,USERS.LINK_FB LINK_FB, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
+		String sql = "select USERS.EMAIL EMAIL,USERS.PASSWORD PASSWORD,USERS.LINK_FB LINK_FB, USERS.PHONE PHONE, MAP.MACHINE_ID MACHINE_ID, PACKAGES.ID PACKAGE_ID, PACKAGES.NAME PACKAGE_NAME, MAP.END_DATE END_DATE, MAP.ID ID, MAP.IS_CANCEL IS_CANCEL, MAP.TOTAL_AMOUNT TOTAL_AMOUNT,MAP.PAY_DATE PAY_DATE from MAP left join USERS on USERS.ID = MAP.USER_ID left join PACKAGES on PACKAGES.ID = MAP.PACKAGE_ID WHERE 1 = 1 ";
 		if(productSearch.getEmail() != null && !"".equals(productSearch.getEmail())) {
 			sql += " AND USERS.EMAIL = ?";
 		}
@@ -131,6 +131,7 @@ public class ProductService {
 				product.setId(rs.getLong("ID"));
 				product.setPassword(rs.getString("PASSWORD"));
 				product.setPaydate(rs.getString("PAY_DATE"));
+				product.setEndDate(rs.getString("END_DATE"));
 				product.setLinkFb(rs.getString("LINK_FB"));
 				map.add(product);
 			}
