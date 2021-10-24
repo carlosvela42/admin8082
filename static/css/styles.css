@@ -11250,3 +11250,7 @@ body {
 .paginate_button{
 	padding-right: 15px;
 }
+
+.dataTable-table{
+	font-family: "Times New Roman";
+}

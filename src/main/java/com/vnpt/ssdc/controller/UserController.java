@@ -58,6 +58,7 @@ public class UserController {
 	public ModelAndView saveUser(@ModelAttribute("user") Product user) {
     	service.updateProduct(user);
     	service.update(user);
+    	service.updatePayment(user);
 		ModelAndView mav = new ModelAndView("user");
 		List<Product> users = service.listAll();
 		Product product = new Product();

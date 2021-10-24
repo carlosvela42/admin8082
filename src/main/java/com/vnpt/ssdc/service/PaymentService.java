@@ -8,7 +8,10 @@ package com.vnpt.ssdc.service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,7 +45,7 @@ public class PaymentService {
 	
 	public List<Payment> listAll(Payment payment) {
 		List<Payment> map = new ArrayList<Payment>();
-		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1 and (status != '3' || status is null) AND c.id not in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1) ";
+		String sql = "select a.id,a.price, a.epay_date, c.name,d.email,d.phone,b.machine_id,a.status status, b.pay_date, b.next_pay_date, b.code, b.id MAP_ID, c.time TIME from payment a left join map b on b.id = a.map_id left join packages c on c.id = b.package_id left join users d on d.id = b.user_id where 1 = 1 and (status != '3' || status is null) AND c.id not in (SELECT ID FROM PACKAGES WHERE PRICE = 0 AND TIME = 14 AND TYPE = 1) ";
 		if(payment.getEpayDateStart() != null && !"".equals(payment.getEpayDateStart())) {
 			sql += " and a.epay_date >= '" + payment.getEpayDateStart() + "'";
 		}
@@ -105,7 +108,13 @@ public class PaymentService {
 					  pm.setStatusName("");
 				}
 				
-				pm.setNextPayDate(rs.getString("NEXT_PAY_DATE"));
+				Calendar c = Calendar.getInstance(); 
+				c.setTime(rs.getDate("PAY_DATE")); 
+				c.add(Calendar.DATE, Integer.parseInt(rs.getString("TIME")));
+				DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+				String paydate = formatter.format(c.getTime());
+				pm.setNextPayDate(paydate);
+				
 				pm.setCode(rs.getString("CODE"));
 				pm.setId(rs.getLong("ID"));
 				pm.setPayDate(rs.getString("PAY_DATE"));

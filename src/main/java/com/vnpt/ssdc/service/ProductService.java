@@ -255,6 +255,31 @@ public class ProductService {
 		}
 	}
 	
+	public void updatePayment(Product user) {
+		String sql = "";
+		Connection con = null;
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		try {
+
+			if ("Y".equals(user.getIsCancel())) {
+				con = JdbcTemplate.getDataSource().getConnection();
+				sql = "update PAYMENT set STATUS = '3' WHERE MAP_ID = ?";
+				pstm = con.prepareStatement(sql);
+				pstm.setLong(1, user.getId());
+
+				int updateCount = pstm.executeUpdate();
+				System.out.print(updateCount);
+			}
+
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally {
+			closeResource(con, pstm, rs);
+		}
+	}
+	
 	private void closeResource(Connection con, PreparedStatement pstm, ResultSet rs) {
 		try {
 			if (con != null) {
