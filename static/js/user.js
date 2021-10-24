@@ -18,7 +18,7 @@
 			
 			    for(j = 0 ; j < tab.rows.length ; j++) 
 			    {     
-			        tab_text=tab_text+"<tr>"+tab.rows[j].innerHTML+"</tr>";
+			        tab_text=tab_text+"<tr style='font-family:\"Times New Roman\"'>"+tab.rows[j].innerHTML+"</tr>";
 			        //tab_text=tab_text+"</tr>";
 			    }
 			
