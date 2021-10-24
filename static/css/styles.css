@@ -1953,6 +1953,7 @@ progress {
 }
 .table > :not(:last-child) > :last-child > *, .dataTable-table > :not(:last-child) > :last-child > * {
   border-bottom-color: currentColor;
+  font-family: "Times New Roman";
 }
 
 .caption-top {
@@ -11173,6 +11174,7 @@ body {
 .dataTable-table > thead > tr > th {
   vertical-align: top;
   padding: 0.5rem 0.5rem;
+  font-family: "Times New Roman";
 }
 
 .dataTable-table > thead > tr > th {
@@ -11249,8 +11251,4 @@ body {
 
 .paginate_button{
 	padding-right: 15px;
-}
-
-.dataTable-table{
-	font-family: "Times New Roman";
 }
